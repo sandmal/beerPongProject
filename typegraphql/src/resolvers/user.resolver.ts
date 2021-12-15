@@ -1,5 +1,5 @@
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
-import { CreateUserInput, LoginInput, User } from '../schema/user.schema';
+import { ConfirmUserInput, CreateUserInput, LoginInput, User } from '../schema/user.schema';
 import UserService from '../service/user.service';
 import Context from '../types/context';
 
@@ -10,8 +10,13 @@ export default class UserResolver {
   }
 
   @Mutation(() => User)
-  createUser(@Arg('input') input: CreateUserInput) {
+  registerUser(@Arg('input') input: CreateUserInput) {
     return this.userService.createUser(input);
+  }
+
+  @Mutation(() => User)
+  confirmUser(@Arg('input') input: ConfirmUserInput) {
+    return this.userService.confirmUser(input);
   }
 
   @Mutation(() => String) // returns the JWT

@@ -43,11 +43,17 @@ export class User {
   name: string;
 
   @Field(() => String)
-  @prop({ required: true })
+  @prop({ required: true, unique: true })
   email: string;
 
   @prop({ required: true })
   password: string;
+
+  @prop({ required: true })
+  confirmToken: string;
+
+  @prop({ required: true, default: false })
+  active: boolean;
 }
 
 export const UserModel = getModelForClass<typeof User, QueryHelpers>(User);
@@ -77,4 +83,13 @@ export class LoginInput {
   email: string;
   @Field(() => String)
   password: string;
+}
+
+@InputType()
+export class ConfirmUserInput {
+  @Field(() => String)
+  email: string;
+
+  @Field(() => String)
+  confirmToken: string;
 }

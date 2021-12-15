@@ -1,9 +1,10 @@
 import { ApolloError } from 'apollo-server';
 import bcrypt from 'bcrypt';
-import { CreateUserInput, LoginInput, UserModel } from '../schema/user.schema';
+import { ConfirmUserInput, CreateUserInput, LoginInput, UserModel } from '../schema/user.schema';
 import Context from '../types/context';
 import { signJwt } from '../utils/jwt';
 import { CookieOptions } from 'express';
+import { nanoid } from 'nanoid';
 
 const cookieOptions: CookieOptions = {
   maxAge: 3.154e10, // 1 year,
@@ -17,7 +18,32 @@ const cookieOptions: CookieOptions = {
 class UserService {
   async createUser(input: CreateUserInput) {
     // call user model to create a user
-    return UserModel.create(input);
+    const emailExist = await UserModel.find().findByEmail(input.email).lean();
+
+    if (emailExist) {
+      throw new ApolloError('Account with email already exists');
+    }
+
+    const confirmToken = nanoid(32);
+    return UserModel.create({ ...input, confirmToken });
+  }
+
+  async confirmUser(input: ConfirmUserInput) {
+    // find user by email
+    const user = await UserModel.find().findByEmail(input.email).lean();
+    // Check if user exist
+    // Check if the confirmation tokens === confirmToken
+    if (!user || input.confirmToken !== user.confirmToken) {
+      throw new Error('Email or confirm token are incorrect');
+    }
+
+    // change active to true
+    const updatedUser = { $set: { active: true } };
+
+    // save the user
+    await UserModel.updateOne(user, updatedUser, { new: true });
+    // return user
+    return user;
   }
 
   async login(input: LoginInput, context: Context) {
