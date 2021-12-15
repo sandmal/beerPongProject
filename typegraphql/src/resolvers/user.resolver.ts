@@ -20,6 +20,11 @@ export default class UserResolver {
   }
 
   @Query(() => User, { nullable: true })
+  logout(@Ctx() context: Context) {
+    return this.userService.logout(context);
+  }
+
+  @Query(() => User, { nullable: true })
   me(@Ctx() context: Context) {
     return context.user;
   }
