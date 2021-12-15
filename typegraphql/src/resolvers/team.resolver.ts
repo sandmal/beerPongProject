@@ -26,4 +26,10 @@ export default class TeamResolver {
   team(@Arg('input') input: GetTeamInput) {
     return this.teamService.findSingleTeam(input);
   }
+
+  @Authorized()
+  @Query(() => [Team])
+  myTeams(@Ctx() context: Context) {
+    return this.teamService.findMyTeams(context);
+  }
 }
