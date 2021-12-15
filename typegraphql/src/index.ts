@@ -14,17 +14,17 @@ import { connectToMongo } from './utils/mongo';
 import { verifyJwt } from './utils/jwt';
 import { User } from './schema/user.schema';
 import Context from './types/context';
+import authChecker from './utils/authChecker';
 
 async function bootstrap() {
   // Build the schema
-
   const schema = await buildSchema({
     resolvers,
+    authChecker,
   });
 
   // Init express
   const app = express();
-
   app.use(cookieParser());
 
   // Create the apollo server
@@ -45,15 +45,18 @@ async function bootstrap() {
     ],
   });
 
+  // start ApolloServer
   await server.start();
-  // apply middleware to server
 
+  // apply middleware to server
   server.applyMiddleware({ app });
 
   // app.listen on express server
   app.listen({ port: 4000 }, () => {
-    console.log('App is listening on http://localhost:4000');
+    console.log('App is listening on http://localhost:4000/graphql');
   });
+
+  // Connect to mongodb server
   connectToMongo();
 }
 
