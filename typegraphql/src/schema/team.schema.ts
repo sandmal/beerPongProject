@@ -1,5 +1,5 @@
 import { getModelForClass, index, prop, Ref } from '@typegoose/typegoose';
-import { IsNumber, IsString, Max, MaxLength, Min, MinLength } from 'class-validator';
+import { IsNumber, Max, MaxLength, Min, MinLength } from 'class-validator';
 import { customAlphabet } from 'nanoid';
 import { Field, InputType, ObjectType } from 'type-graphql';
 import { User } from './user.schema';
@@ -51,7 +51,7 @@ export class CreateTeamInput {
   @MinLength(5, {
     message: 'Team name must be at least 5 characters',
   })
-  @MaxLength(10, {
+  @MaxLength(20, {
     message: 'Team name must not be longer than 10 characters',
   })
   @Field()
