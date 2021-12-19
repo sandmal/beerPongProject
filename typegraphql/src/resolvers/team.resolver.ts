@@ -16,6 +16,18 @@ export default class TeamResolver {
     return this.teamService.createTeam({ ...input, createdBy: user?._id, creator: user?.name });
   }
 
+  @Authorized()
+  @Mutation(() => Team)
+  joinTeam(@Arg('input') input: GetTeamInput, @Ctx() context: Context) {
+    return this.teamService.joinTeam(input, context);
+  }
+
+  @Authorized()
+  @Mutation(() => Team)
+  leaveTeam(@Arg('input') input: GetTeamInput, @Ctx() context: Context) {
+    return this.teamService.leaveTeam(input, context);
+  }
+
   @Query(() => [Team])
   teams() {
     return this.teamService.findTeams();

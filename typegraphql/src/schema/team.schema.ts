@@ -35,6 +35,14 @@ export class Team {
   @prop({ required: true, enum: TeamSize })
   size: number;
 
+  @Field(() => [String])
+  @prop({ ref: () => User })
+  members: Array<Ref<User>>;
+
+  @Field(() => Boolean)
+  @prop({ required: true, default: false })
+  isFull: boolean;
+
   @Field(() => String)
   @prop({ required: true })
   description: string;
