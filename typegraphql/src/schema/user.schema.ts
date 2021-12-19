@@ -25,6 +25,8 @@ interface QueryHelpers {
     return;
   }
 
+  console.log('hello');
+
   const salt = await bcrypt.genSalt(10);
 
   const hash = bcrypt.hashSync(this.password, salt);
@@ -51,6 +53,9 @@ export class User {
 
   @prop({ required: true })
   confirmToken: string;
+
+  @prop()
+  forgotToken: string;
 
   @prop({ required: true, default: false })
   active: boolean;
@@ -92,4 +97,22 @@ export class ConfirmUserInput {
 
   @Field(() => String)
   confirmToken: string;
+}
+
+@InputType()
+export class ForgotPasswordInput {
+  @Field(() => String)
+  email: string;
+}
+
+@InputType()
+export class ResetPasswordInput {
+  @Field(() => String)
+  forgotToken: string;
+
+  @Field(() => String)
+  password: string;
+
+  @Field(() => String)
+  passwordConfirm: string;
 }
