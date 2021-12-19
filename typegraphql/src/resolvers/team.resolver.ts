@@ -11,37 +11,39 @@ export default class TeamResolver {
 
   @Authorized()
   @Mutation(() => Team)
-  createTeam(@Arg('input') input: CreateTeamInput, @Ctx() context: Context) {
+  createTeam(@Arg('input') input: CreateTeamInput, @Ctx() context: Context): Promise<Team> {
     const user = context.user!;
     return this.teamService.createTeam({ ...input, createdBy: user?._id, creator: user?.name });
   }
 
   @Authorized()
   @Mutation(() => Team)
-  joinTeam(@Arg('input') input: GetTeamInput, @Ctx() context: Context) {
+  joinTeam(@Arg('input') input: GetTeamInput, @Ctx() context: Context): Promise<Team | null> {
     return this.teamService.joinTeam(input, context);
   }
 
   @Authorized()
   @Mutation(() => Team)
-  leaveTeam(@Arg('input') input: GetTeamInput, @Ctx() context: Context) {
+  leaveTeam(@Arg('input') input: GetTeamInput, @Ctx() context: Context): Promise<Team | null> {
     return this.teamService.leaveTeam(input, context);
-  }
-
-  @Query(() => [Team])
-  teams() {
-    return this.teamService.findTeams();
   }
 
   @Authorized()
   @Query(() => Team)
-  team(@Arg('input') input: GetTeamInput) {
+  team(@Arg('input') input: GetTeamInput): Promise<Team | null> {
     return this.teamService.findSingleTeam(input);
   }
 
   @Authorized()
   @Query(() => [Team])
-  myTeams(@Ctx() context: Context) {
+  myCreatedTeams(@Ctx() context: Context) {
     return this.teamService.findMyTeams(context);
+  }
+
+  /** UNAUTHENTICATED **/
+
+  @Query(() => [Team])
+  teams() {
+    return this.teamService.findTeams();
   }
 }

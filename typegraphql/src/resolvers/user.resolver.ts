@@ -10,22 +10,22 @@ export default class UserResolver {
   }
 
   @Mutation(() => User)
-  registerUser(@Arg('input') input: CreateUserInput) {
+  registerUser(@Arg('input') input: CreateUserInput): Promise<User> {
     return this.userService.createUser(input);
   }
 
   @Mutation(() => User)
-  confirmUser(@Arg('input') input: ConfirmUserInput) {
+  confirmUser(@Arg('input') input: ConfirmUserInput): Promise<User> {
     return this.userService.confirmUser(input);
   }
 
   @Mutation(() => String) // returns the JWT
-  login(@Arg('input') input: LoginInput, @Ctx() context: Context) {
+  login(@Arg('input') input: LoginInput, @Ctx() context: Context): Promise<String> {
     return this.userService.login(input, context);
   }
 
   @Query(() => User, { nullable: true })
-  logout(@Ctx() context: Context) {
+  logout(@Ctx() context: Context): Promise<null> {
     return this.userService.logout(context);
   }
 

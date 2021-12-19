@@ -1,9 +1,11 @@
+import { createConfirmationUrl } from './../utils/createConfirmationUrl';
 import { ApolloError } from 'apollo-server';
 import bcrypt from 'bcrypt';
 import { ConfirmUserInput, CreateUserInput, LoginInput, UserModel } from '../schema/user.schema';
 import Context from '../types/context';
 import { signJwt } from '../utils/jwt';
 import { CookieOptions } from 'express';
+import { sendEmail } from '../utils/sendEmail';
 import { nanoid } from 'nanoid';
 
 const cookieOptions: CookieOptions = {
@@ -23,9 +25,10 @@ class UserService {
     if (emailExist) {
       throw new ApolloError('Account with email already exists');
     }
-
     const confirmToken = nanoid(32);
-    return UserModel.create({ ...input, confirmToken });
+    const user = await UserModel.create({ ...input, confirmToken });
+    await sendEmail(user.email, createConfirmationUrl(user.confirmToken));
+    return user;
   }
 
   async confirmUser(input: ConfirmUserInput) {
@@ -38,7 +41,7 @@ class UserService {
     }
 
     // change active to true
-    const updatedUser = { $set: { active: true } };
+    const updatedUser = { $set: { active: true }, $unset: { confirmToken: 1 } };
 
     // save the user
     await UserModel.updateOne(user, updatedUser, { new: true });
@@ -53,6 +56,10 @@ class UserService {
 
     if (!user) {
       throw new ApolloError(e);
+    }
+
+    if (!user.active) {
+      throw new ApolloError('Confirm email before login');
     }
 
     // Validate the password
