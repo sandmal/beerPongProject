@@ -1,7 +1,8 @@
 import { ApolloError } from 'apollo-server';
-import { CreateTeamInput, GetTeamInput, TeamModel } from '../schema/team.schema';
+import { CreateTeamInput, GetTeamInput, Member, TeamModel } from '../schema/team.schema';
 import { User } from '../schema/user.schema';
 import Context from '../types/context';
+import { UpdateTeam, TeamMember } from '../types/team';
 
 class TeamService {
   async createTeam(input: CreateTeamInput & { createdBy: User['_id']; creator: User['name'] }) {
@@ -34,12 +35,12 @@ class TeamService {
     const team = await this.findSingleTeam(input);
 
     // check if team is not already full
-    if (team?.isFull) {
+    if (team!.isFull) {
       throw new ApolloError('Team is already full');
     }
 
     // check if current user har already joined team if it has return member else return empty array
-    const alreadyJoined = team?.members.filter((member) => {
+    const alreadyJoined = team!.members.filter((member) => {
       const checkExistingMembers = member?.toString();
 
       if (checkExistingMembers === user._id) {
@@ -52,12 +53,14 @@ class TeamService {
       throw new ApolloError('User already joined');
     }
 
+    const teamMember: TeamMember = { _id: user._id, name: user.name };
+
     // define new object with values to update
-    const newTeamMember = { members: team?.members, isFull: team?.isFull };
-    newTeamMember?.members!.push(user['_id']);
+    const newTeamMember: UpdateTeam = { members: team!.members, isFull: team!.isFull };
+    newTeamMember!.members!.push(teamMember);
 
     // check if team is full
-    if (newTeamMember.members?.length == team?.size) {
+    if (newTeamMember.members!.length == team!.size) {
       newTeamMember.isFull = true;
     }
     const item = { $set: newTeamMember };
@@ -75,16 +78,14 @@ class TeamService {
     const team = await this.findSingleTeam(input);
 
     // Check if team is empty
-    if (team?.members?.length == 0) {
+    if (team!.members!.length == 0) {
       throw new ApolloError('Team is empty');
     }
 
     // Check if user has joined team
-    const userHasJoinedTeam = team?.members?.filter((member) => {
-      const checkExistingMembers = member?.toString();
-
-      if (checkExistingMembers === user._id) {
-        return checkExistingMembers;
+    const userHasJoinedTeam: Member[] = team!.members!.filter((member) => {
+      if (member._id === user._id) {
+        return member._id;
       }
     });
 
@@ -93,13 +94,11 @@ class TeamService {
     }
 
     // remove user from team
-    const removeTeamMember = { members: team?.members, isFull: team?.isFull };
+    const removeTeamMember: UpdateTeam = { members: team!.members, isFull: team!.isFull };
 
-    const removeUserFromTeam = removeTeamMember?.members!.filter((member) => {
-      const checkExistingMembers = member?.toString();
-
-      if (checkExistingMembers !== user._id) {
-        return checkExistingMembers;
+    const removeUserFromTeam: Member[] = removeTeamMember?.members!.filter((member) => {
+      if (member._id !== user._id) {
+        return member._id;
       }
     });
 
