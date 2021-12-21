@@ -5,8 +5,8 @@ import {
   ForgotPasswordInput,
   LoginInput,
   ResetPasswordInput,
-  User,
-} from '../schema/user.schema';
+} from '../input/user.input';
+import { User } from '../schema/user.schema';
 import UserService from '../service/user.service';
 import Context from '../types/context';
 

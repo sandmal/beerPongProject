@@ -1,26 +1,11 @@
 import { getModelForClass, index, prop, Ref } from '@typegoose/typegoose';
-import { IsNumber, Max, MaxLength, Min, MinLength } from 'class-validator';
 import { customAlphabet } from 'nanoid';
-import { Field, InputType, ObjectType } from 'type-graphql';
+import { Field, ObjectType } from 'type-graphql';
+import { TeamSize } from '../types/team';
+import { Member } from './member.schema';
 import { User } from './user.schema';
 
 const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz1234567890', 10);
-
-enum TeamSize {
-  DUO = 2,
-  TRIO = 3,
-  QUAD = 4,
-  FIVER = 5,
-}
-
-@ObjectType()
-export class Member {
-  @Field(() => String)
-  _id: string;
-
-  @Field(() => String)
-  name: string;
-}
 
 @ObjectType()
 @index({ productId: 1 })
@@ -62,30 +47,3 @@ export class Team {
 }
 
 export const TeamModel = getModelForClass<typeof Team>(Team);
-
-@InputType()
-export class CreateTeamInput {
-  @MinLength(5, {
-    message: 'Team name must be at least 5 characters',
-  })
-  @MaxLength(20, {
-    message: 'Team name must not be longer than 10 characters',
-  })
-  @Field()
-  name: string;
-
-  @IsNumber()
-  @Min(2)
-  @Max(5)
-  @Field()
-  size: number;
-
-  @Field()
-  description: string;
-}
-
-@InputType()
-export class GetTeamInput {
-  @Field()
-  teamId: string;
-}

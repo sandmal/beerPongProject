@@ -1,5 +1,6 @@
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql';
-import { CreateTeamInput, GetTeamInput, Team } from '../schema/team.schema';
+import { CreateTeamInput, GetTeamInput } from '../input/team.input';
+import { Team } from '../schema/team.schema';
 import TeamService from '../service/team.service';
 import Context from '../types/context';
 

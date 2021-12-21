@@ -1,5 +1,7 @@
 import { ApolloError } from 'apollo-server';
-import { CreateTeamInput, GetTeamInput, Member, TeamModel } from '../schema/team.schema';
+import { CreateTeamInput, GetTeamInput } from '../input/team.input';
+import { Member } from '../schema/member.schema';
+import { TeamModel } from '../schema/team.schema';
 import { User } from '../schema/user.schema';
 import Context from '../types/context';
 import { UpdateTeam, TeamMember } from '../types/team';

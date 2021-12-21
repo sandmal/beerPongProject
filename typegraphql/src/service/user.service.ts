@@ -1,20 +1,20 @@
 import { createConfirmationUrl } from './../utils/createConfirmationUrl';
 import { ApolloError } from 'apollo-server';
 import bcrypt from 'bcrypt';
-import {
-  ConfirmUserInput,
-  CreateUserInput,
-  ForgotPasswordInput,
-  LoginInput,
-  ResetPasswordInput,
-  UserModel,
-} from '../schema/user.schema';
+import { UserModel } from '../schema/user.schema';
 import Context from '../types/context';
 import { signJwt } from '../utils/jwt';
 import { CookieOptions } from 'express';
 import { sendEmail } from '../utils/sendEmail';
 import { nanoid } from 'nanoid';
 import { forgotPasswordUrl } from '../utils/forgotPasswordUrl';
+import {
+  ConfirmUserInput,
+  CreateUserInput,
+  ForgotPasswordInput,
+  ResetPasswordInput,
+  LoginInput,
+} from '../input/user.input';
 
 const cookieOptions: CookieOptions = {
   maxAge: 3.154e10, // 1 year,
