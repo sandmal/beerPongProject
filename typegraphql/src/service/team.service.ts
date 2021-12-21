@@ -5,11 +5,11 @@ import Context from '../types/context';
 
 class TeamService {
   async createTeam(input: CreateTeamInput & { createdBy: User['_id']; creator: User['name'] }) {
-    return TeamModel.create(input);
+    return await TeamModel.create(input);
   }
 
   async findTeams() {
-    const teams = TeamModel.find().lean();
+    const teams = await TeamModel.find().lean();
     return teams;
   }
 
