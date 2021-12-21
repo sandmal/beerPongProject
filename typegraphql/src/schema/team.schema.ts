@@ -14,6 +14,15 @@ enum TeamSize {
 }
 
 @ObjectType()
+export class Member {
+  @Field(() => String)
+  _id: string;
+
+  @Field(() => String)
+  name: string;
+}
+
+@ObjectType()
 @index({ productId: 1 })
 export class Team {
   @Field(() => String)
@@ -35,9 +44,9 @@ export class Team {
   @prop({ required: true, enum: TeamSize })
   size: number;
 
-  @Field(() => [String])
-  @prop({ ref: () => User })
-  members: Array<Ref<User>>;
+  @Field(() => [Member])
+  @prop({ items: User, default: [] })
+  members: Member[];
 
   @Field(() => Boolean)
   @prop({ required: true, default: false })
