@@ -18,6 +18,6 @@ FEATURES TEAM
 - Create Team
 - Join Team
 - Leave Team
-- Teams (Shows all teams)
 - Team (Query for single team)
+- Teams (Shows all teams)
 - My Created Teams (Shows all teams user has created)
