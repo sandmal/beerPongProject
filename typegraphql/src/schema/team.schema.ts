@@ -8,7 +8,7 @@ import { User } from './user.schema';
 const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz1234567890', 10);
 
 @ObjectType()
-@index({ productId: 1 })
+@index({ teamId: 1 })
 export class Team {
   @Field(() => String)
   _id: string;

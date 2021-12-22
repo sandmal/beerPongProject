@@ -15,6 +15,7 @@ import {
   ResetPasswordInput,
   LoginInput,
 } from '../input/user.input';
+import { UserStatisticModel } from '../schema/userStatistics.schema';
 
 const cookieOptions: CookieOptions = {
   maxAge: 3.154e10, // 1 year,
@@ -35,6 +36,7 @@ class UserService {
     }
     const confirmToken = nanoid(32);
     const user = await UserModel.create({ ...input, confirmToken });
+
     await sendEmail(user.email, createConfirmationUrl(user.confirmToken));
     return user;
   }
@@ -53,6 +55,14 @@ class UserService {
 
     // save the user
     await UserModel.updateOne(user, updatedUser, { new: true });
+
+    // add user status to the user
+    await UserStatisticModel.create({
+      user: { _id: user._id, name: user.name },
+      matches: {},
+      streak: {},
+    });
+
     // return user
     return user;
   }
