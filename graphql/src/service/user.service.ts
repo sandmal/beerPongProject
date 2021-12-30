@@ -19,9 +19,6 @@ import {
 const cookieOptions: CookieOptions = {
   maxAge: 3.154e10, // 1 year,
   httpOnly: true,
-  domain: 'localhost',
-  path: '/',
-  sameSite: 'strict',
   secure: process.env.NODE_ENV === 'production',
 };
 

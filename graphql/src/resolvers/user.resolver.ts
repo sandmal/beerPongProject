@@ -50,4 +50,9 @@ export default class UserResolver {
   me(@Ctx() context: Context) {
     return context.user;
   }
+
+  @Query(() => User, { nullable: true })
+  test() {
+    return { name: 'testing here lmao' };
+  }
 }

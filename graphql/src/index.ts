@@ -26,6 +26,10 @@ async function bootstrap() {
   // Init express
   const app = express();
   app.use(cookieParser());
+  const corsOptions = {
+    origin: ['http://localhost:3000', 'https://localhost:4000', 'https://localhost:4000/graphql'],
+    credentials: true,
+  };
 
   // Create the apollo server
   const server = new ApolloServer({
@@ -49,7 +53,10 @@ async function bootstrap() {
   await server.start();
 
   // apply middleware to server
-  server.applyMiddleware({ app });
+  server.applyMiddleware({
+    app,
+    cors: corsOptions,
+  });
 
   // app.listen on express server
   app.listen({ port: 4000 }, () => {
