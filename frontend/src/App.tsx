@@ -11,6 +11,7 @@ import TeamId from './components/teams/TeamId';
 import Logout from './pages/Logout';
 import { AuthProviderHOC } from './components/HOC/AuthProviderHOC';
 import IsAuthenticated from './components/auth/isAuthenticated';
+import Teams from './pages/Teams';
 
 function App() {
   return (
@@ -18,24 +19,30 @@ function App() {
       <AuthProviderHOC>
         <Header />
         <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/logout" element={<Logout />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/signup' element={<Signup />} />
+          <Route path='/logout' element={<Logout />} />
           <Route
-            path="/user"
+            path='/user'
             element={
               <IsAuthenticated>
                 <User />
               </IsAuthenticated>
-            }
-          >
-            <Route path="myteams" element={<MyTeams />}>
-              <Route path=":teamid" element={<TeamId />} />
+            }>
+            <Route path='myteams' element={<MyTeams />}>
+              <Route path=':teamid' element={<TeamId />} />
             </Route>
-            <Route path="profile" element={<Profile />} />
+            <Route path='profile' element={<Profile />} />
           </Route>
           <Route
-            path="*"
+            path='/teams'
+            element={
+              <IsAuthenticated>
+                <Teams />
+              </IsAuthenticated>
+            }></Route>
+          <Route
+            path='*'
             element={
               <main>
                 <p>There is nothing here</p>

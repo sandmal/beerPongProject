@@ -26,9 +26,7 @@ export default function Login() {
   };
   const validationSchema = Yup.object({
     email: Yup.string().email('Invalid email address').required('Email required'),
-    password: Yup.string()
-      .max(20, 'Password must be at least 20 characters')
-      .required('Password is required'),
+    password: Yup.string().max(20, 'Password must be at least 20 characters').required('Password is required'),
   });
 
   return (
@@ -48,16 +46,15 @@ export default function Login() {
             navigate('/user');
           }
           setSubmitting(false);
-        }}
-      >
+        }}>
         <Form>
-          <Field name="email" type="text" placeholder="Email" />
-          <ErrorMessage name="email" component={'div'} />
+          <Field name='email' type='text' placeholder='Email' />
+          <ErrorMessage name='email' component={'div'} />
 
-          <Field name="password" type="password" placeholder="Password" />
-          <ErrorMessage name="password" component={'div'} />
+          <Field name='password' type='password' placeholder='Password' />
+          <ErrorMessage name='password' component={'div'} />
 
-          <button type="submit" className="login-button">
+          <button type='submit' className='login-button'>
             <span>Login</span>
           </button>
         </Form>
