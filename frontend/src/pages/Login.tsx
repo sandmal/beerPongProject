@@ -2,8 +2,9 @@ import { gql, useMutation } from '@apollo/client';
 import * as Yup from 'yup';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
-
+import { AuthContext } from '../components/HOC/AuthProviderHOC';
+import { useContext } from 'react';
+import { store } from '../helpers/Auth';
 const USERLOGIN = gql`
   mutation login($input: LoginInput!) {
     login(input: $input)
@@ -16,13 +17,13 @@ interface SigninValues {
 }
 
 export default function Login() {
-  const [login, { data }] = useMutation(USERLOGIN);
+  const [login] = useMutation(USERLOGIN);
+  const context = useContext(AuthContext);
   const navigate = useNavigate();
   const initialValues: SigninValues = {
     email: '',
     password: '',
   };
-
   const validationSchema = Yup.object({
     email: Yup.string().email('Invalid email address').required('Email required'),
     password: Yup.string()
@@ -41,8 +42,10 @@ export default function Login() {
           const test = await login({
             variables: { input: { email: values.email, password: values.password } },
           });
-          if (test.data.me !== null) {
-            navigate('/profile');
+          if (test.data.login !== null) {
+            context.setAuth({ ...context.auth, isLoggedIn: true });
+            store('isLoggedIn', true);
+            navigate('/user');
           }
           setSubmitting(false);
         }}

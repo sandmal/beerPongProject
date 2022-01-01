@@ -1,40 +1,50 @@
 import './App.css';
-import IsAuthenticated from './components/isAuthenticated';
 
-import { ApolloClient, ApolloProvider, HttpLink, InMemoryCache } from '@apollo/client';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Profile from './pages/Profile';
+import { Route, Routes } from 'react-router-dom';
+import Profile from './components/users/Profile';
 import Login from './pages/Login';
+import Signup from './pages/Signup';
+import Header from './components/ui/Header';
+import User from './pages/User';
+import MyTeams from './components/teams/MyTeams';
+import TeamId from './components/teams/TeamId';
+import Logout from './pages/Logout';
+import { AuthProviderHOC } from './components/HOC/AuthProviderHOC';
+import IsAuthenticated from './components/auth/isAuthenticated';
 
-const httpLink = new HttpLink({
-  uri: 'http://localhost:4000/graphql',
-  credentials: 'include',
-});
-
-const link = httpLink;
-
-const client = new ApolloClient({
-  link: link as any,
-  cache: new InMemoryCache(),
-});
 function App() {
   return (
-    <ApolloProvider client={client}>
-      <Router>
+    <>
+      <AuthProviderHOC>
+        <Header />
         <Routes>
-          <Route path="/landing" element={<div>Hello</div>} />
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/logout" element={<Logout />} />
           <Route
-            path="/profile"
+            path="/user"
             element={
               <IsAuthenticated>
-                <Profile />
+                <User />
               </IsAuthenticated>
+            }
+          >
+            <Route path="myteams" element={<MyTeams />}>
+              <Route path=":teamid" element={<TeamId />} />
+            </Route>
+            <Route path="profile" element={<Profile />} />
+          </Route>
+          <Route
+            path="*"
+            element={
+              <main>
+                <p>There is nothing here</p>
+              </main>
             }
           />
         </Routes>
-      </Router>
-    </ApolloProvider>
+      </AuthProviderHOC>
+    </>
   );
 }
 

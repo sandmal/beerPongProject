@@ -27,7 +27,12 @@ async function bootstrap() {
   const app = express();
   app.use(cookieParser());
   const corsOptions = {
-    origin: ['http://localhost:3000', 'https://localhost:4000', 'https://localhost:4000/graphql'],
+    origin: [
+      'http://localhost:3000',
+      'http://localhost:4000',
+      'http://localhost:4000/graphql',
+      'http://10.0.0.36:3000',
+    ],
     credentials: true,
   };
 
