@@ -1,0 +1,14 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "editor.formatOnSave": true,
+    "eslint.validate": ["html", "javascript", "javascriptreact", "typescript"],
+    "[javascript]": { "editor.formatOnSave": false },
+    "[javascriptreact]": { "editor.formatOnSave": false },
+    "editor.codeActionsOnSave": { "source.fixAll.eslint": true }
+  }
+}
