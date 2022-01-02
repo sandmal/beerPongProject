@@ -1,9 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
-import { read } from '../../helpers/Auth';
-
-export interface INITIALSTATE {
-  isLoggedIn: any;
-}
+import { read } from '../../helpers/LocalStorage';
+import { INITIALSTATE } from '../../types';
 
 const useValue = () => {
   const [auth, setAuth] = useState<INITIALSTATE>({ isLoggedIn: false });

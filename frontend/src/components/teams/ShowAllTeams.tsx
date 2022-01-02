@@ -1,17 +1,6 @@
 import React from 'react';
-import { gql, useQuery } from '@apollo/client';
-
-const SHOWALLTEAMS = gql`
-  query teams {
-    teams {
-      teamId
-      creator
-      name
-      description
-      size
-    }
-  }
-`;
+import { useQuery } from '@apollo/client';
+import { SHOWALLTEAMS } from '../../graphql';
 
 function ShowAllTeams() {
   const { loading, error, data } = useQuery(SHOWALLTEAMS);
@@ -27,6 +16,7 @@ function ShowAllTeams() {
             <p>Created by: {team.creator}</p>
             <p>Description: {team.description}</p>
             <p>Size: {team.size}</p>
+            {team.members.length === Number(team.size) ? <p>full</p> : <button>Join team</button>}
           </div>
         ))}
       </>

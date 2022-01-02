@@ -1,13 +1,6 @@
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
-
-const LOGOUT = gql`
-  query {
-    logout {
-      name
-    }
-  }
-`;
+import { LOGOUT } from '../graphql';
 
 function Logout() {
   const { loading, error } = useQuery(LOGOUT);

@@ -1,20 +1,7 @@
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { NavLink, Outlet } from 'react-router-dom';
+import { MYCREATEDTEAMS } from '../../graphql';
 
-const MYCREATEDTEAMS = gql`
-  query myCreatedTeams {
-    myCreatedTeams {
-      teamId
-      name
-      size
-      description
-      members {
-        _id
-        name
-      }
-    }
-  }
-`;
 function MyTeams() {
   const { loading, error, data } = useQuery(MYCREATEDTEAMS);
   if (loading) return <p>Loading...</p>;
@@ -30,8 +17,7 @@ function MyTeams() {
                 return { backgroundColor: isActive ? 'red' : 'gray' };
               }} // TODO!: not working for some reason
               to={`${team.name}`}
-              state={{ team: team }}
-            >
+              state={{ team: team }}>
               {team.name}
             </NavLink>
           </div>

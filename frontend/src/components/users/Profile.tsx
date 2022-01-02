@@ -1,15 +1,7 @@
 import React from 'react';
 
-import { gql, useQuery } from '@apollo/client';
-
-const SHOWPROFILE = gql`
-  query {
-    me {
-      name
-      email
-    }
-  }
-`;
+import { useQuery } from '@apollo/client';
+import { SHOWPROFILE } from '../../graphql';
 
 function Profile() {
   const { loading, error, data } = useQuery(SHOWPROFILE);

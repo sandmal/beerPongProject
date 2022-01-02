@@ -1,20 +1,12 @@
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import * as Yup from 'yup';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../components/HOC/AuthProviderHOC';
 import { useContext } from 'react';
-import { store } from '../helpers/Auth';
-const USERLOGIN = gql`
-  mutation login($input: LoginInput!) {
-    login(input: $input)
-  }
-`;
-
-interface SigninValues {
-  email: string;
-  password: string;
-}
+import { store } from '../helpers/LocalStorage';
+import { USERLOGIN } from '../graphql';
+import { SigninValues } from '../types';
 
 export default function Login() {
   const [login] = useMutation(USERLOGIN);

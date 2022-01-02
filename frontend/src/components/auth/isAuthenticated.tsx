@@ -1,13 +1,10 @@
 import React, { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { read } from '../../helpers/Auth';
+import { read } from '../../helpers/LocalStorage';
+import { ChildrenProps } from '../../types';
 import { AuthContext } from '../HOC/AuthProviderHOC';
 
-interface Props {
-  children?: React.ReactNode;
-}
-
-function IsAuthenticated({ children }: Props) {
+function IsAuthenticated({ children }: ChildrenProps) {
   const context = useContext(AuthContext);
   const location = useLocation();
   const isLoggedIn = read('isLoggedIn');
@@ -15,11 +12,7 @@ function IsAuthenticated({ children }: Props) {
   return isLoggedIn || context.auth.isLoggedIn ? (
     <>{children}</>
   ) : (
-    <Navigate
-      replace={true}
-      to="/login"
-      state={{ from: `${location.pathname}${location.search}` }}
-    />
+    <Navigate replace={true} to='/login' state={{ from: `${location.pathname}${location.search}` }} />
   );
 }
 

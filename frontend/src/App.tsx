@@ -29,9 +29,6 @@ function App() {
                 <User />
               </IsAuthenticated>
             }>
-            <Route path='myteams' element={<MyTeams />}>
-              <Route path=':teamid' element={<TeamId />} />
-            </Route>
             <Route path='profile' element={<Profile />} />
           </Route>
           <Route
@@ -40,7 +37,11 @@ function App() {
               <IsAuthenticated>
                 <Teams />
               </IsAuthenticated>
-            }></Route>
+            }>
+            <Route path='myteams' element={<MyTeams />}>
+              <Route path=':teamid' element={<TeamId />} />
+            </Route>
+          </Route>
           <Route
             path='*'
             element={
