@@ -17,8 +17,11 @@ function Header() {
 
   return context.auth.isLoggedIn ? (
     <NavBar>
+      <NavLink to='/home'>Home</NavLink>
+      <NavLink to='/discover'>Discover</NavLink>
+      <NavLink to='/tournament'>Tournament</NavLink>
+      <NavLink to='/create'>Create</NavLink>
       <NavLink to='/user'>User</NavLink>
-      <NavLink to='/teams'>Teams</NavLink>
       <NavLink
         to='/logout'
         onClick={() => {
