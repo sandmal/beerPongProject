@@ -1,10 +1,10 @@
 import { useMutation } from '@apollo/client';
-import { USER_CONFIRM } from '../graphql';
+import { USER_CONFIRM } from '../../graphql';
 import { Form, Formik } from 'formik';
-import { DefaultConfirmValues } from '../types';
-import { read } from '../helpers/LocalStorage';
+import { DefaultConfirmValues } from '../../types';
+import { read } from '../../helpers/LocalStorage';
 import { useNavigate, useParams } from 'react-router-dom';
-import { AuthContext } from '../context/Auth.context';
+import { AuthContext } from '../../context/Auth.context';
 import { useContext } from 'react';
 
 function ConfirmUser() {

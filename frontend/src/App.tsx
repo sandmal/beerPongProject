@@ -14,7 +14,7 @@ import Discover from './pages/Discover';
 import Home from './pages/Home';
 import Tournament from './pages/Tournament';
 import Create from './pages/Create';
-import ConfirmUser from './pages/ConfirmUser';
+import ConfirmUser from './components/users/ConfirmUser';
 import { AuthProvider } from './context/Auth.context';
 
 function App() {
