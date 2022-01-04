@@ -8,13 +8,7 @@ import { CookieOptions } from 'express';
 import { sendEmail } from '../utils/sendEmail';
 import { nanoid } from 'nanoid';
 import { forgotPasswordUrl } from '../utils/forgotPasswordUrl';
-import {
-  ConfirmUserInput,
-  CreateUserInput,
-  ForgotPasswordInput,
-  ResetPasswordInput,
-  LoginInput,
-} from '../input/user.input';
+import { ConfirmUserInput, CreateUserInput, ForgotPasswordInput, ResetPasswordInput, LoginInput } from '../input/user.input';
 
 const cookieOptions: CookieOptions = {
   maxAge: 3.154e10, // 1 year,
@@ -98,11 +92,7 @@ class UserService {
     const hash = bcrypt.hashSync(password, salt);
 
     // saves new password to db
-    await UserModel.updateOne(
-      user,
-      { $set: { password: hash }, $unset: { forgotToken: 1 } },
-      { new: true }
-    );
+    await UserModel.updateOne(user, { $set: { password: hash }, $unset: { forgotToken: 1 } }, { new: true });
     return user;
   }
 
@@ -115,19 +105,19 @@ class UserService {
       throw new ApolloError(e);
     }
 
-    if (!user.active) {
-      throw new ApolloError('Confirm email before login');
-    }
-
     // Validate the password
     const passwordIsValid = await bcrypt.compare(input.password, user.password);
 
     if (!passwordIsValid) {
       throw new ApolloError(e);
     }
-
+    const userToSign = {
+      name: user.name,
+      email: user.email,
+      active: user.active,
+    };
     // Sign a jwt
-    const token = signJwt(user);
+    const token = signJwt(userToSign);
 
     // Set a cookie for the JWT
     context.res.cookie('accessToken', token, cookieOptions);

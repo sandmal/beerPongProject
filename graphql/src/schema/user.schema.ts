@@ -1,11 +1,4 @@
-import {
-  getModelForClass,
-  index,
-  pre,
-  prop,
-  queryMethod,
-  ReturnModelType,
-} from '@typegoose/typegoose';
+import { getModelForClass, index, pre, prop, queryMethod, ReturnModelType } from '@typegoose/typegoose';
 import { AsQueryMethod } from '@typegoose/typegoose/lib/types';
 import bcrypt from 'bcrypt';
 import { Field, ObjectType } from 'type-graphql';

@@ -2,39 +2,37 @@ import { useMutation } from '@apollo/client';
 import * as Yup from 'yup';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../components/HOC/AuthProviderHOC';
+import { USER_LOGIN } from '../graphql';
+import { DefaultSignValues } from '../types';
 import { useContext } from 'react';
-import { store } from '../helpers/LocalStorage';
-import { USERLOGIN } from '../graphql';
-import { SigninValues } from '../types';
+import { AuthContext } from '../context/Auth.context';
+import jwt from 'jwt-decode';
 
 export default function Login() {
-  const [login] = useMutation(USERLOGIN);
-  const context = useContext(AuthContext);
+  const [login] = useMutation(USER_LOGIN);
   const navigate = useNavigate();
-  const initialValues: SigninValues = {
-    email: '',
-    password: '',
-  };
   const validationSchema = Yup.object({
     email: Yup.string().email('Invalid email address').required('Email required'),
     password: Yup.string().max(20, 'Password must be at least 20 characters').required('Password is required'),
   });
 
+  const { dispatch } = useContext(AuthContext);
   return (
     <div>
       <h1>Login</h1>
       <Formik
-        initialValues={initialValues}
+        initialValues={DefaultSignValues}
         validationSchema={validationSchema}
         onSubmit={async (values, { setSubmitting }) => {
           setSubmitting(true);
-          const test = await login({
+          const loginData = await login({
             variables: { input: { email: values.email, password: values.password } },
           });
-          if (test.data.login !== null) {
-            context.setAuth({ ...context.auth, isLoggedIn: true });
-            store('isLoggedIn', true);
+          let decodedToken: any = jwt(loginData.data.login);
+          if (loginData.data.login !== null) {
+            const email = decodedToken.email;
+            const isRegistered = decodedToken.active;
+            dispatch({ type: 'USER_LOGIN', payload: { email: email, isRegistered: isRegistered } });
             navigate('/user');
           }
           setSubmitting(false);

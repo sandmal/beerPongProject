@@ -9,17 +9,18 @@ import User from './pages/User';
 import MyTeams from './components/teams/MyTeams';
 import TeamId from './components/teams/TeamId';
 import Logout from './pages/Logout';
-import { AuthProviderHOC } from './components/HOC/AuthProviderHOC';
 import IsAuthenticated from './components/auth/isAuthenticated';
 import Discover from './pages/Discover';
 import Home from './pages/Home';
 import Tournament from './pages/Tournament';
 import Create from './pages/Create';
+import ConfirmUser from './pages/ConfirmUser';
+import { AuthProvider } from './context/Auth.context';
 
 function App() {
   return (
-    <>
-      <AuthProviderHOC>
+    <AuthProvider>
+      <>
         <Header />
         <Routes>
           <Route path='/login' element={<Login />} />
@@ -46,6 +47,9 @@ function App() {
                 <User />
               </IsAuthenticated>
             }>
+            <Route path='confirm' element={<ConfirmUser />}>
+              <Route path=':token' element={<p>Hey</p>} />
+            </Route>
             <Route path='profile' element={<Profile />} />
           </Route>
           <Route
@@ -57,8 +61,8 @@ function App() {
             }
           />
         </Routes>
-      </AuthProviderHOC>
-    </>
+      </>
+    </AuthProvider>
   );
 }
 

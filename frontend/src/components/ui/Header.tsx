@@ -1,8 +1,7 @@
 import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { clear } from '../../helpers/LocalStorage';
-import { AuthContext } from '../HOC/AuthProviderHOC';
+import { AuthContext } from '../../context/Auth.context';
 
 const NavBar = styled.nav`
   display: flex;
@@ -13,20 +12,18 @@ const NavBar = styled.nav`
 `;
 
 function Header() {
-  const context = useContext(AuthContext);
-
-  return context.auth.isLoggedIn ? (
+  const { state, dispatch } = useContext(AuthContext);
+  return state.isLoggedIn ? (
     <NavBar>
       <NavLink to='/home'>Home</NavLink>
       <NavLink to='/discover'>Discover</NavLink>
       <NavLink to='/tournament'>Tournament</NavLink>
-      <NavLink to='/create'>Create</NavLink>
+      {state.isRegistered ? <NavLink to='/create'>Create</NavLink> : null}
       <NavLink to='/user'>User</NavLink>
       <NavLink
         to='/logout'
         onClick={() => {
-          context.setAuth({ ...context.auth, isLoggedIn: false });
-          clear();
+          dispatch({ type: 'USER_LOGOUT' });
         }}>
         Logout
       </NavLink>
@@ -34,6 +31,7 @@ function Header() {
   ) : (
     <NavBar>
       <NavLink to='/login'>Login</NavLink>
+      <NavLink to='/register'>Register</NavLink>
     </NavBar>
   );
 }
