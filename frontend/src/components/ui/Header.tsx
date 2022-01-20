@@ -81,6 +81,14 @@ function Header() {
           </div>
         </div>
         <div className={isActive ? 'mobile-menu hidden md:hidden' : 'mobile-menu md:hidden'}>
+          {isLoggedIn && (
+            <>
+              <NavLink to='/user' className='block py-2 px-4 text-sm hover:bg-gray-200'>
+                User
+              </NavLink>
+              <hr />
+            </>
+          )}
           <NavLink to='/discover' className='block py-2 px-4 text-sm hover:bg-gray-200'>
             Discover
           </NavLink>
@@ -106,9 +114,6 @@ function Header() {
             </>
           ) : (
             <>
-              <NavLink to='/user' className='block py-2 px-4 text-sm hover:bg-gray-200'>
-                User
-              </NavLink>
               <NavLink
                 to='/logout'
                 onClick={() => {
