@@ -39,7 +39,13 @@ function App() {
           </Route>
           <Route path='/discover' element={<Discover />}></Route>
           <Route path='/tournament' element={<Tournament />}></Route>
-          <Route path='/create' element={<Create />}></Route>
+          <Route
+            path='/create'
+            element={
+              <IsAuthenticated>
+                <Create />
+              </IsAuthenticated>
+            }></Route>
           <Route
             path='/user'
             element={
