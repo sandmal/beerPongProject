@@ -52,7 +52,8 @@ export default class UserResolver {
   }
 
   @Query(() => User, { nullable: true })
-  test() {
+  test(): {name: string;
+}  {
     return { name: 'testing here lmao' };
   }
 }
